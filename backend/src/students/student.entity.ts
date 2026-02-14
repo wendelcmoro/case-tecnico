@@ -14,6 +14,6 @@ export class Student {
     (environment) => environment.students,
     { cascade: true }
   )
-  @JoinTable() // 🔥 dono da relação
+  @JoinTable()
   teachingEnvironments: TeachingEnvironment[];
 }

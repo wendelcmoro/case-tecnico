@@ -9,15 +9,18 @@
 1. [Descrição](#1---descrição)<br>
 2. [Requisitos](#2-Requisitos)<br>
 3. [Execução do backend](#Execução-do-backend)<br>
-   2.1 [Instalando dependências](##Instalando-dependências)<br>
-   2.2 [Configurando ambiente local](##Configurando-ambiente-local)<br>
-   2.3 [Executando projeto](##Executando-projeto)<br>
-4. [Execução do frontend](#Execução-do-frontend)<br>
    3.1 [Instalando dependências](##Instalando-dependências)<br>
    3.2 [Configurando ambiente local](##Configurando-ambiente-local)<br>
-   3.3 [Executando projeto](##Executando-projeto)<br>
-5. [Observações](#Observações)<br>
-6. [Usando o Docker para montar o banco](#Usando-o-Docker-para-montar-o-banco)<br>
+   3.3 [Gerando chave para JWT](##Gerando-chave-para-JWT)<br>
+   3.4 [Executando projeto](##Executando-projeto)<br>
+   3.5 [Execução de migrations](##Execução-de-migrations)<br>
+   3.6 [Rotas API](##Rotas-API)<br>
+4. [Execução do frontend](#Execução-do-frontend)<br>
+   4.1 [Instalando dependências](##Instalando-dependências)<br>
+   4.2 [Configurando ambiente local](##Configurando-ambiente-local)<br>
+   4.3 [Executando projeto](##Executando-projeto)<br>
+   4.4 [Login](##Login)<br>
+5. [Usando o Docker para montar o banco](#Usando-o-Docker-para-montar-o-banco)<br>
 
 # 1 - Descrição
 
@@ -120,6 +123,145 @@ usuário: admin
 ```  
 senha: 12356
 ```
+
+## 3.6 Rotas API
+
+### 3.6.1 Autenticação
+
+Todas as rotas (exceto login) são protegidas por **JWT**.
+
+Envie o token no header:
+
+Authorization: Bearer {seu_token}
+
+### 3.6.2 Usuários
+
+#### GET /users/me
+Retorna o usuário autenticado.
+
+#### GET /users/:id
+Busca um usuário pelo ID.
+
+Resposta:
+```
+{
+  "id": 1,
+  "username": "admin"
+}
+```
+
+#### POST /users
+Cria um novo usuário.
+
+Body:
+```
+{
+  "username": "admin",
+  "password": "123456"
+}
+```
+
+
+### 3.6.3 Ambientes de estudo
+
+#### GET /teaching-environments
+
+Lista todos os ambientes.
+
+Resposta:
+```
+{
+  "teaching_environments": [
+    {
+      "id": 1,
+      "name": "Sala 101",
+      "type": "CLASSROOM"
+    }
+  ]
+}
+```
+
+#### POST /teaching-environments
+Cria um novo ambiente.
+
+Body:
+```
+{
+  "name": "Laboratório 1",
+  "type": "LABORATORY"
+}
+```
+
+Tipos disponíveis:
+
+- CLASSROOM
+- LABORATORY
+- STUDY_ROOM
+
+### 3.6.4 Estudantes
+
+#### GET /students
+
+Lista todos os alunos.
+
+#### GET /students/:id
+
+Busca aluno por ID.
+
+#### POST /students
+
+Cria um aluno.
+
+Body:
+```
+{
+  "name": "João"
+}
+```
+
+#### PUT /students
+
+Atualiza aluno.
+
+Body:
+```
+{
+  "id": 1,
+  "name": "João Atualizado"
+}
+```
+
+#### DELETE /students/:id
+Remove aluno. 
+
+Resposta:
+```
+{
+  "message": "Student deleted successfully"
+}
+```
+
+### 3.6.5 Relacionamento Aluno < - > Ambiente
+
+#### POST /students/use_environment
+
+Vincula um ambiente a um aluno.
+
+Body:
+```
+{
+  "studentId": 1,
+  "environmentId": 2
+}
+```
+
+#### GET /students/:id/teaching_environments
+
+Lista os ambientes de um aluno.
+
+#### DELETE /students/:studentId/teaching_environments/:environmentId
+
+Remove vínculo entre aluno e ambiente.
 
 # 4 Execução do frontend
 

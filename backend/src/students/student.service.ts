@@ -94,4 +94,34 @@ export class StudentService {
 
     return await this.studentRepository.save(student);
   }
+
+  async findStudentWithEnvironments(id: number): Promise<Student | null> {
+    const student = await this.studentRepository.findOne({
+      where: { id },
+      relations: ['teachingEnvironments'],
+    });
+
+    return student;
+  }
+
+  async removeEnvironmentFromStudent(
+    studentId: number,
+    environmentId: number,
+  ): Promise<Student> {
+
+    const student = await this.studentRepository.findOne({
+      where: { id: studentId },
+      relations: ['teachingEnvironments'],
+    });
+
+    if (!student) {
+      throw new Error('Student not found');
+    }
+
+    student.teachingEnvironments = student.teachingEnvironments.filter(
+      (env) => env.id !== environmentId,
+    );
+
+    return await this.studentRepository.save(student);
+  }
 }

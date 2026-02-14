@@ -82,4 +82,28 @@ export class StudentController {
         dto.environmentId,
       );
     }
+
+  @UseGuards(AuthGuard('jwt'))
+    @Get(':id/teaching_environments')
+    async getStudentEnvironments(@Param('id', ParseIntPipe) id: number) {
+      const student = await this.studentService.findStudentWithEnvironments(id);
+
+      if (!student) {
+        throw new NotFoundException('Student not found');
+      }
+
+      return student.teachingEnvironments;
+    }
+
+  @UseGuards(AuthGuard('jwt'))
+    @Delete(':studentId/teaching_environments/:environmentId')
+    async removeEnvironment(
+      @Param('studentId', ParseIntPipe) studentId: number,
+      @Param('environmentId', ParseIntPipe) environmentId: number,
+    ) {
+      return await this.studentService.removeEnvironmentFromStudent(
+        studentId,
+        environmentId,
+      );
+    }
 }

@@ -6,8 +6,8 @@
 
 # Conteúdos
 
-1. [Descrição](#Requisitos)<br>
-2. [Requisitos](#Requisitos)<br>
+1. [Descrição](#1---descrição)<br>
+2. [Requisitos](#2-Requisitos)<br>
 3. [Execução do backend](#Execução-do-backend)<br>
    2.1 [Instalando dependências](##Instalando-dependências)<br>
    2.2 [Configurando ambiente local](##Configurando-ambiente-local)<br>
@@ -87,12 +87,38 @@ Existe um arquivo **.env.example**, copiar este arquivo para um **.env** e subst
 cp .env.example .env
 ```
 
-## 3.3 Executando projeto
+## 3.3 Gerando chave para JWT
+
+Opcionalmente, você pode gerar uma chave aleatória para o JWT com o comando abaixo:
+
+```console
+npm run generate:secret
+```
+
+Ao executar, copiar a chave gerada para a variável do **JWT_SECRET**.
+
+## 3.4 Executando projeto
 
 Para iniciar a execução do backend, basta executar o seguinte comando:
 
 ```console
 npm run start
+```
+
+## 3.5 Execução de migrations
+
+Para executar migrations com dados de teste padrão, execute o comando:
+
+```console
+npm run typeorm -- migration:run -d src/data-source.ts 
+```
+
+O comando acima criará alguns dados de alunos, salas, e um usuário admin. Para acessar o usuário de admin, o login padrão é o abaixo:
+```
+usuário: admin
+```  
+```  
+senha: 12356
 ```
 
 # 4 Execução do frontend
@@ -107,7 +133,11 @@ npm i
 
 ## 4.2 Configurando ambiente local
 
-No caso do frontend, estamos utilizando o framework NuxtJS, caso necessite, é possível alterar a url da API no arquivo **nuxt.config.js**, na seção **env** e alterar a url para a do backend local ou remoto. O padrão é o endereço **http://127.0.0.1:8000**.
+Existe um arquivo **.env.example**, copiar este arquivo para um **.env** e substituir **API_URL** pelo endereço de sua API local:
+
+```console
+cp .env.example .env
+```
 
 ## 4.3 Executando projeto
 
@@ -117,15 +147,22 @@ Para executar projeto no ambiente local, devemos executar o seguinte comando ago
 npm run dev
 ```
 
-Agora basta acessarmos a seguinte rota(se for a padrão) em um navegador de sua escolha:
+Agora basta acessarmos a seguinte rota(se for a padrão) em um navegador de sua escolha. Por padrão, o NextJs iniciará na rota a seguir:
 
 `localhost:3000`
 
-# 5 Observações
 
-A API espera um arquivo CSV com separador ';'.
+## 4.4 Login
 
-# 6 Usando o Docker para montar o banco
+Para acessar o usuário padrão, utilize os dados à seguir:
+```
+usuário: admin
+```  
+```  
+senha: 12356
+```
+
+# 5 Usando o Docker para montar o banco
 
 No diretório principal deste projeto, foi disponibilizado um arquivo **yml**, este yml está configurado para criar um container docker do MariaDB 10.5, o arquivo **.env.example** já está mapeado para conectar neste banco. Para executar o container basta executar o seguinte comando se estiver com docker instalado em sua máquina local:
 

@@ -1,0 +1,12 @@
+services:
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: case_test
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "12000:3306"

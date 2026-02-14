@@ -2,10 +2,9 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
+  ManyToMany,
 } from 'typeorm';
-import { User } from '../users/user.entity';
+import { Student } from '../students/student.entity';
 
 enum Type {
   CLASSROOM = 'CLASSROOM',
@@ -23,4 +22,10 @@ export class TeachingEnvironment {
 
   @Column({ type: 'enum', enum: Type, default: Type.CLASSROOM })
   type: string;
+
+  @ManyToMany(
+    () => Student,
+    (student) => student.teachingEnvironments
+  )
+  students: Student[];
 }

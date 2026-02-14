@@ -11,8 +11,4 @@ export class User {
 
   @Column()
   password: string;
-
-  // Relação 1:N
-  @OneToMany(() => TeachingEnvironment, (TeachingEnvironment) => TeachingEnvironment.userId)
-  teachingEnvironments: TeachingEnvironment[];
 }

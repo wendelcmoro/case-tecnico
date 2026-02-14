@@ -8,9 +8,9 @@ import {
 import { User } from '../users/user.entity';
 
 enum Type {
-  ACTIVE = 'ACTIVE',
-  CANCELED = 'CANCELED',
-  DEMO_CANCELED = 'DEMO_CANCELED',
+  CLASSROOM = 'CLASSROOM',
+  LABORATORY = 'LABORATORY',
+  STUDY_ROOM = 'STUDY_ROOM',
 }
 
 @Entity({ name: 'teaching_environments' })
@@ -19,22 +19,8 @@ export class TeachingEnvironment {
   id: number;
 
   @Column()
-  quantity_of_charges: number;
+  name: string;
 
-  @Column()
-  charge_period: number;
-
-  @Column({ type: 'timestamp' })
-  start_date: Date;
-
-  @Column({ type: 'enum', enum: Type, default: Type.ACTIVE })
+  @Column({ type: 'enum', enum: Type, default: Type.CLASSROOM })
   type: string;
-
-  // Relação N:1
-  @ManyToOne(() => User, (user) => user.teachingEnvironments)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @Column({ name: 'user_id' })
-  userId: number;
 }

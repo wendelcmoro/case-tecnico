@@ -1,8 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body } from '@nestjs/common';
 import { TeachingEnvironment } from './teaching_environment.entity';
 import { TeachingEnvironmentService } from './teaching_environment.service';
+import { CreateTeachingEnvironmentsDto } from './create_teaching_environment.dto';
 
-@Controller('TeachingEnvironments')
+@Controller('teaching-environments')
 export class TeachingEnvironmentController {
   constructor(private readonly TeachingEnvironmentService: TeachingEnvironmentService) {}
 
@@ -11,19 +12,9 @@ export class TeachingEnvironmentController {
     return await this.TeachingEnvironmentService.findAll();
   }
 
-  @Get('/teaching-environments')
-  async getTeachingEnvironmentsPerMonth(
-    @Query('year')
-    year?: number,
-    @Query('status')
-    status?: number,
-    @Query('date_filter')
-    date_filter?: number,
-  ): Promise<{ month: number; count: number }[]> {
-    return this.TeachingEnvironmentService.getTeachingEnvironmentsPerMonth(
-      year,
-      status,
-      date_filter,
-    );
+  @Post()
+  async create(@Body() createTeachingEnvironmentsDto: CreateTeachingEnvironmentsDto) {
+    const environment = await this.TeachingEnvironmentService.create(createTeachingEnvironmentsDto);
+    return environment;
   }
 }
